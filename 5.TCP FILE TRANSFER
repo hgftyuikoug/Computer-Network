@@ -1,0 +1,121 @@
+AIM: 
+
+To write a java program for file transfer using TCP Sockets. 
+Problem Statement:  
+To transfer computer files between a client and server on a computer network using TCP Sockets. 
+Concept: 
+Our aim is to send a file from the client machine to the server machine using TCP Communication.  
+
+Algorithm  
+
+Server 
+
+Step1: Import java packages and create class file server. 
+Step2: Create a new server socket and bind it to the port. 
+Step3: Accept the client connection  
+Step4: Get the file name and stored into the BufferedReader. 
+Step5: Create a new object class file and realine. 
+Step6: If file is exists then FileReader read the content until EOF is reached.  
+Step7: Stop the program.  
+
+Client  
+
+Step1: Import java packages and create class file server. 
+Step2: Create a new server socket and bind it to the port.  
+Step3: Now connection is established. 
+Step4: The object of a BufferReader class is used for storing data content which has been retrieved from 
+socket object.  
+Step5: The content of file is displayed in the client window and the connection is closed.  
+Step6: Stop the program. 
+
+PROGRAM: 
+
+fs.java 
+import java.io.*; 
+import java.net.*; 
+public class fs 
+{ 
+public static void main(String args[])throws IOException 
+{ 
+ServerSocket s1=null; 
+try 
+{ 
+s1=new ServerSocket(1187); 
+} 
+catch(IOException u1) 
+{ 
+System.out.println("Could not found port 1187"); 
+System.exit(1); 
+} 
+Socket c=null; 
+try 
+{ 
+c=s1.accept(); 
+System.out.println("Connection Frame"+c); 
+} 
+catch(IOException e) 
+{ 
+System.out.println("accept failed"); 
+System.exit(1); 
+} 
+PrintWriter out=new PrintWriter(c.getOutputStream(),true); 
+BufferedReader sin=new BufferedReader(new InputStreamReader(System.in)); 
+System.out.println("Enter the text file name:"); 
+String s=sin.readLine(); 
+File f=new File(s); 
+if(f.exists()) 
+{ 
+BufferedReader in =new BufferedReader(new FileReader(s)); 
+String v; 
+while((v=in.readLine())!=null) 
+{ 
+out.write(v); 
+out.flush(); 
+} 
+System.out.println("The file send successfully"); 
+in.close(); 
+c.close(); 
+s1.close(); 
+} 
+} 
+} 
+
+fc.java 
+
+import java.io.*; 
+import java.net.*; 
+public class fc 
+{ 
+public static void main(String args[])throws IOException 
+{ 
+Socket s=null; 
+BufferedReader b=null; 
+try 
+{ 
+s=new Socket(InetAddress.getLocalHost(),1187); 
+b=new BufferedReader(new InputStreamReader(s.getInputStream())); 
+} 
+catch(Exception u) 
+{ 
+System.out.println("The file is received"); 
+System.out.println("Dont know host"); 
+System.exit(1); 
+} 
+String inp; 
+while((inp=b.readLine())!=null) 
+{ 
+System.out.println("The content of the file is"); 
+System.out.println(inp); 
+System.out.println("The file received successfully"); 
+} 
+b.close(); 
+s.close(); 
+} 
+} 
+
+OUTPUT: 
+Server 
+Client 
+
+RESULT: 
+Thus the java program file transfer application using TCP Sockets was executed
