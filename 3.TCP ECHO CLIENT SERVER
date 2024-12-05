@@ -1,0 +1,99 @@
+AIM:  
+ 
+To write java program for TCP echo client server. 
+ 
+ALGORITHM: 
+SERVER: 
+    STEP 1: Start 
+    STEP 2: Declare the variables for the socket 
+    STEP 3: Specify the family, protocol, IP address and port number 
+    STEP 4: Create a socket using socket() function 
+    STEP 5: Bind the IP address and Port number 
+    STEP 6: Listen and accept the client’s request for the connection 
+    STEP 7: Read the client’s message 
+    STEP 8: Display the client’s message 
+    STEP 9: Close the socket 
+    STEP 10: Stop 
+CLIENT: 
+    STEP 1: Start 
+    STEP 2: Declare the variables for the socket 
+    STEP 3:  Specify the family, protocol, IP address and port number 
+    STEP 4: Create a socket using socket() function 
+    STEP 5: Call the connect() function 
+    STEP 6: Read the input message 
+    STEP 7: Send the input message to the server 
+    STEP 8: Display the server’s echo 
+    STEP 9: Close the socket 
+    STEP 10: Stop 
+ 
+ 
+ 
+ 
+ 
+ 
+PROGRAM: 
+
+SERVER PROGRAM: 
+import java.io.*; 
+Ex No : 3 TCP ECHO CLIENT/SERVER 
+Date :  
+import java.net.*; 
+import java.rmi.*; 
+class echos 
+{ 
+public static void main(String args[])throws Exception 
+{ 
+try 
+{ 
+ServerSocket ss=new ServerSocket(2100); 
+Socket s=ss.accept(); 
+DataInputStream in=new DataInputStream(s.getInputStream()); 
+DataOutputStream out=new DataOutputStream(s.getOutputStream()); 
+BufferedReader br=new BufferedReader(new InputStreamReader(System.in)); 
+String msg=in.readUTF(); 
+System.out.println("The message from client is:"+msg); 
+out.writeUTF(msg); 
+} 
+catch(Exception e) 
+{ 
+} 
+} 
+} 
+e.printStackTrace(); 
+
+CLIENT PROGRAM: 
+
+import  java.io.*; 
+import java.net.*; 
+import java.rmi.*; 
+class echoc 
+{ 
+public static void main(String args[])throws Exception 
+ 
+ { 
+  try 
+  { 
+  Socket s=new Socket(InetAddress.getLocalHost(),2100); 
+  DataInputStream in=new DataInputStream(s.getInputStream()); 
+  DataOutputStream out=new DataOutputStream(s.getOutputStream()); 
+  BufferedReader br=new BufferedReader(new InputStreamReader(System.in)); 
+  System.out.println("Enter the message:"); 
+  String msg1=br.readLine(); 
+  out.writeUTF(msg1); 
+  String msg2=in.readUTF(); 
+  System.out.println("The message from client is:"+msg2); 
+  } 
+  catch(Exception e) 
+  { 
+   e.printStackTrace(); 
+  } 
+ } 
+} 
+ 
+ 
+ 
+OUTPUT: 
+Server 
+Client 
+RESULT: 
+Thus the java program to client/server using TCP Sockets was executed successfully 
