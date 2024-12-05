@@ -1,0 +1,55 @@
+AIM: 
+
+To write a http web client program to download a web page using TCP sockets in java 
+Problem Statement:  
+A client program to get the file name from the user.  
+A HTTP server program that resolves the given file and displays the contents of the file.  
+Concept: HTTP  
+
+1. The Hypertext Transfer Protocol (HTTP) is a protocol used mainly to access data on the WWW.  
+2. HTTP functions as a combination of FTP and SMTP.  
+3. SMTP messages are stored and forwarded, but HTTP messages are delivered immediately. 
+4. The commands from the client to the server are embedded in a request message. The contents of the 
+requested file or other information are embedded in a response message. 
+Algorithm:  
+
+Step1: Set a server port as 80. 
+Step2: Using HTTP services create a Socket for server by specifying the server port. 
+Step3: Use HTTP socket for connecting the client to the URL.  
+Step4: Use BufferedReader to output stream to place the response from the server by the client.  
+Step5: Close the Connection as soon the request is been serviced. Use Malformed URL exception If any errors in 
+grabbing the server 
+PROGRAM: 
+
+import java.io.*; 
+import java.net.*; 
+public class SocketHTTPClient { 
+ 
+public static void main(String[] args) { 
+        String hostName = "www.gmail.com"; 
+        int portNumber = 80; 
+        try { 
+            Socket socket = new Socket(hostName, portNumber); 
+            PrintWriter out = 
+                new PrintWriter(socket.getOutputStream(), true); 
+            BufferedReader in = 
+                new BufferedReader( 
+                    new InputStreamReader(socket.getInputStream())); 
+            out.println("GET / HTTP/1.1\nHost: www.gmail.com\n\n"); 
+            String inputLine; 
+            while ((inputLine = in.readLine()) != null) { 
+                System.out.println(inputLine); 
+            } 
+        } catch (UnknownHostException e) { 
+            System.err.println("Don't know about host " + hostName); 
+            System.exit(1); 
+        } catch (IOException e) { 
+            System.err.println("Couldn't get I/O for the connection to " + hostName); 
+            System.exit(1); 
+        }  
+    } 
+} 
+ 
+OUTPUT 
+Result: 
+Thus the program for creating sockets for HTTP web page upload and download was implemented
