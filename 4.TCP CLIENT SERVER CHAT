@@ -1,0 +1,142 @@
+AIM: 
+
+To implement a CHAT application, where the Client establishes a connection with the Server. The 
+Client and Server can send as well as receive messages at the same time. Both the Client and Server 
+exchange messages. 
+
+ALGORITHM: 
+
+Server 
+
+Step1: Start the program and create server and client sockets. 
+Step2: Use input streams to get the message from user. 
+Step3: Use output streams to send message to the client.  
+Step4: Wait for client to display this message and write a new one to be displayed by the server.  
+Step5: Display message given at client using input streams read from socket.  
+Step6: Stop the program. 
+
+Client 
+
+Step1: Start the program and create a client socket that connects to the required host and port. 
+Step2: Use input streams read message given by server and print it.  
+Step3: Use input streams; get the message from user to be given to the server.  
+Step4: Use output streams to write message to the server. 
+Step5: Stop the program. 
+
+PROGRAM: 
+
+TCP Chat Server--tcpchatserver.java 
+import java.io.*; 
+import java.net.*; 
+class tcpchatserver 
+{ 
+public static void main(String args[])throws Exception 
+{ 
+PrintWriter toClient; 
+BufferedReader fromUser, fromClient; 
+try 
+{ 
+ServerSocket Srv = new ServerSocket(5555); 
+System.out.print("\nServer started\n"); 
+Socket Clt = Srv.accept(); 
+System.out.println("Client connected"); 
+toClient = new PrintWriter(new BufferedWriter(new OutputStreamWriter(Clt.getOutputStream())), true); 
+fromClient = new BufferedReader(new InputStreamReader(Clt.getInputStream())); 
+fromUser = new BufferedReader(new InputStreamReader(System.in)); 
+String CltMsg, SrvMsg; 
+while(true) 
+{ 
+CltMsg= fromClient.readLine(); 
+if(CltMsg.equals("end")) 
+break; 
+else 
+{ 
+System.out.println("\nServer <<< " +CltMsg); 
+System.out.print("Message to Client : "); 
+SrvMsg = fromUser.readLine(); 
+toClient.println(SrvMsg); 
+} 
+} 
+System.out.println("\nClient Disconnected"); 
+fromClient.close(); 
+toClient.close(); 
+fromUser.close(); 
+Clt.close(); 
+Srv.close();} 
+catch (Exception E) 
+{ 
+System.out.println(E.getMessage()); 
+}} } 
+
+TCP Chat Client--tcpchatclient.java 
+
+import java.io.*; 
+import java.net.*; 
+class tcpchatclient 
+{ 
+public static void main(String args[])throws Exception 
+{ 
+Socket Clt; 
+PrintWriter toServer; 
+BufferedReader fromUser, fromServer; 
+try 
+{ 
+if (args.length > 1) 
+{ 
+System.out.println("Usage: java hostipaddr"); 
+System.exit(-1); 
+} 
+if (args.length == 0) 
+Clt = new Socket(InetAddress.getLocalHost(),5555); 
+else 
+Clt = new Socket(InetAddress.getByName(args[0]), 5555); 
+toServer = new PrintWriter(new BufferedWriter(new OutputStreamWriter(Clt.getOutputStream())), true); 
+fromServer = new BufferedReader(new InputStreamReader(Clt.getInputStream())); 
+fromUser = new BufferedReader(new InputStreamReader(System.in)); 
+String CltMsg, SrvMsg; 
+System.out.println("Type \"end\" to Quit"); 
+while (true) 
+{ 
+System.out.print("\nMessage to Server : "); 
+CltMsg = fromUser.readLine(); 
+toServer.println(CltMsg); 
+if (CltMsg.equals("end")) 
+break; 
+SrvMsg = fromServer.readLine(); 
+System.out.println("Client <<< " + SrvMsg); 
+} 
+} 
+catch(Exception E) 
+{ 
+System.out.println(E.getMessage()); 
+} 
+} 
+} 
+OUTPUT: 
+Server: 
+$ javac tcpchatserver.java 
+$ java tcpchatserver 
+Server started 
+Client connected 
+Server <<< hi 
+Message to Client : hello 
+Server <<< how r u? 
+Message to Client : fine 
+Server <<< me too 
+Message to Client : bye 
+Client Disconnected 
+Client : 
+$ javac tcpchatclient.java 
+$ java tcpchatclient 
+Type "end" to Quit 
+Message to Server : hi 
+Client <<< hello 
+Message to Server : how r u? 
+Client <<< fine 
+Message to Server : me too 
+Client <<< bye 
+Message to Server : end 
+
+RESULT: 
+
+Thus the java program to chat using TCP Sockets was executed successfully
