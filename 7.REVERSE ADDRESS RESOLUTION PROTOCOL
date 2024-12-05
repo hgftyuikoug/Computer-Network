@@ -1,0 +1,111 @@
+AIM: 
+
+To write a java program to implement Address Resolution Protocol. 
+Objectives: 
+
+RARP (Reverse Address Resolution Protocol) is a protocol by which a physical machine in a local 
+area network can request to learn its IP address from a gateway server's Address Resolution Protocol (ARP) 
+table or cache. 
+
+ALGORITHM: 
+
+Client 
+1. Start the program 
+2. Using socket connection is established between client and server. 
+3. Get the MAC address to be converted into IP address. 
+4. Send this MAC address to server. 
+5. Server returns the MAC address to client. 
+Server 
+1. Start the program 
+2. Accept the socket which is created by the client. 
+3. Server maintains the table in which IP and corresponding MAC addresses are stored. 
+4. Read the MAC address which is send by the client. 
+5. Map the MAC address with its IP address and return the IP address to client. 
+ 
+PROGRAM: 
+
+RARP Client -- rarpclient.java 
+ 
+import java.io.*; 
+import java.net.*; 
+import java.util.*; 
+class Clientrarp 
+{ 
+            public static void main(String args[]) 
+            { 
+            try 
+            {           
+                        BufferedReader in=new BufferedReader(new InputStreamReader(System.in)); 
+                        Socket clsct=new Socket("127.0.0.1",139); 
+ 
+                        DataInputStream din=new DataInputStream(clsct.getInputStream()); 
+                        DataOutputStream dout=new DataOutputStream(clsct.getOutputStream()); 
+                        System.out.println("Enter the Physical Addres (MAC):"); 
+                        String str1=in.readLine(); 
+                        dout.writeBytes(str1+'\n'); 
+                        String str=din.readLine(); 
+                        System.out.println("The Logical address is(IP): "+str);                       
+                        clsct.close(); 
+            } 
+            catch (Exception e) 
+            { 
+            System.out.println(e); 
+            } 
+            } 
+} 
+ 
+RARP Server -- rarpserver.java 
+ 
+ 
+import java.io.*; 
+import java.net.*; 
+import java.util.*; 
+class Serverrarp 
+{ 
+            public static void main(String args[]) 
+            { 
+            try 
+            { 
+                        ServerSocket obj=new ServerSocket(139); 
+                        Socket obj1=obj.accept(); 
+                        while(true) 
+                        { 
+                                    DataInputStream din=new DataInputStream(obj1.getInputStream()); 
+                                    DataOutputStream dout=new DataOutputStream(obj1.getOutputStream()); 
+                                    String str=din.readLine(); 
+                                    String ip[]={"165.165.80.80","165.165.79.1"}; 
+                                    String mac[]={"6A:08:AA:C2","8A:BC:E3:FA"}; 
+ 
+                                    for(int i=0;i<mac.length;i++) 
+                                    { 
+                                                if(str.equals(mac[i])) 
+                                                { 
+                                                            dout.writeBytes(ip[i]+'\n'); 
+                                                            break; 
+                                                } 
+                                    }                       
+                                    obj.close(); 
+                        } 
+                         
+            } 
+            catch(Exception e) 
+            { 
+                        System.out.println(e); 
+            } 
+            } 
+} 
+ 
+OUTPUT: 
+ 
+Output: 
+E:\networks>java Serverrarp 
+E:\networks>java Clientrarp 
+Enter the Physical Address (MAC): 
+6A:08:AA:C2 
+The  is Logical address(IP): 165.165.80.80 
+ 
+ 
+ 
+RESULT: 
+ 
+Thus the IP address was generated for MAC address using RARP protocol
